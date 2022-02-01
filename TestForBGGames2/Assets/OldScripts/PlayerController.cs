@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Pathfinding;
 
 public class PlayerController : MonoBehaviour
 {
@@ -66,7 +67,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator WaitAndGo()
     {
         yield return new WaitForSeconds(2f);
-        GetComponent<UnityEngine.AI.NavMeshAgent>().destination = Finish.transform.position;
+        //GetComponent<UnityEngine.AI.NavMeshAgent>().destination = Finish.transform.position;
+        GetComponent<AIPath>().destination = Finish.transform.position;
     }
 
     public void PlayConfetti()

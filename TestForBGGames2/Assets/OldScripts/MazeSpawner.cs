@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Pathfinding;
 
 public class MazeSpawner : MonoBehaviour
 {
     public static MazeSpawner instance;
-    public GameObject Cell_container, CellPrefab;
+    public GameObject Cell_container, CellPrefab, AStar;
     public int mazeWidth, mazeHeight;
     public MazeGeneratorCell[,] maze;
     public int mazeTotalSize;
@@ -45,10 +46,12 @@ public class MazeSpawner : MonoBehaviour
                 if (maze[x, y].Finish)
                 {
                     c.FinishZone.SetActive(true);
+                    PlayerController.instance.Finish = c.FinishZone;
                 }
             }
         }
-        
+        //AStar.GetComponent<Pathfinding.Pathfinder>().Scan();
+        AstarPath.active.Scan();
     }
     
 
