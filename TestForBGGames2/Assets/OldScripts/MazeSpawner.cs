@@ -42,6 +42,10 @@ public class MazeSpawner : MonoBehaviour
                 c.WallRight.SetActive(maze[x, y].WallRight);
                 c.WallBottom.SetActive(maze[x, y].WallBottom);
                 c.WallTop.SetActive(maze[x, y].WallTop);
+                if (maze[x, y].Finish)
+                {
+                    c.FinishZone.SetActive(true);
+                }
             }
         }
         

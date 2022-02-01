@@ -15,6 +15,7 @@ public class MazeGeneratorCell
 
     public bool visited = false;
     public int distanceFromStart;
+    public bool Finish = false;
 }
 
 public class MazeGenerator
@@ -24,13 +25,13 @@ public class MazeGenerator
 
     public MazeGeneratorCell[,] GenerateMaze()
     {
-        MazeGeneratorCell[,] maze = new MazeGeneratorCell[width, height];
+        MazeGeneratorCell[,] maze = new MazeGeneratorCell[width, height];//возвращаемый результат
 
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                maze[x, y] = new MazeGeneratorCell { X = x, Y = y };
+                maze[x, y] = new MazeGeneratorCell { X = x, Y = y };//размещаем клетку, пишем в нее ее же координаты
             }
         }
         //удаляем стенки по краям
@@ -150,6 +151,7 @@ public class MazeGenerator
             maze[furthest.X, furthest.Y + 1].WallBottom = false;
             furthest.WallTop = false;
         }
+        maze[furthest.X, furthest.Y].Finish = true;
         //else if (furthest.Y == height - 2) maze[furthest.X, furthest.Y + 1].WallBottom = false;
     }
 }

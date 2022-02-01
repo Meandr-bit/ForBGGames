@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    public GameObject WallLeft, WallRight, WallTop, WallBottom, DeathCubePrefab;
+    public GameObject WallLeft, WallRight, WallTop, WallBottom, FinishZone, DeathCubePrefab;
     private void Start()
     {
         //GenerateDeathCubes();
