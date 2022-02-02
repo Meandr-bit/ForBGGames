@@ -43,6 +43,7 @@ public class UIController : MonoBehaviour
     IEnumerator EnableShield()
     {
         PlayerController.instance.EnableShield();
+        DrawPath();
         yield return new WaitForSeconds(2f);
         ShieldButton.GetComponent<Button>().interactable = false;
         PlayerController.instance.DisableShield();
@@ -123,5 +124,23 @@ public class UIController : MonoBehaviour
         PlayerController.instance.GetComponent<AIPath>().destination = PlayerController.instance.Finish.transform.position;
         yield return new WaitForSeconds(2);
         PlayerController.instance.GetComponent<AIPath>().canMove = true;
+    }
+
+    public void DrawPath()
+    {
+        Path currentPath = PlayerController.instance.GetComponent<Seeker>().GetCurrentPath();
+        List<GraphNode> nodes = currentPath.path;
+        List<Vector3> nodesPositions = new List<Vector3>();
+        foreach (GraphNode n in nodes)
+        {
+            Vector3 nodePos = (Vector3)n.position;
+            nodesPositions.Add(nodePos);
+        }
+        GetComponent<LineRenderer>().positionCount = nodesPositions.Count;
+
+        for(int x = 0; x < nodesPositions.Count; x++)
+        {
+            GetComponent<LineRenderer>().SetPosition(x, nodesPositions[x]);
+        }
     }
 }
