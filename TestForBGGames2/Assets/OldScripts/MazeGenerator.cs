@@ -126,7 +126,7 @@ public class MazeGenerator
     private void PlaceMazeExit(MazeGeneratorCell[,] maze)
     {
         MazeGeneratorCell furthest = maze[0, 0];
-
+        /*
         for (int x = 0; x < maze.GetLength(0); x++)
         {
             if (maze[x, height - 2].distanceFromStart > furthest.distanceFromStart) furthest = maze[x, height - 2];
@@ -138,7 +138,8 @@ public class MazeGenerator
             if (maze[width - 2, y].distanceFromStart > furthest.distanceFromStart) furthest = maze[width - 2, y];
             if (maze[0, y].distanceFromStart > furthest.distanceFromStart) furthest = maze[0, y];
         }
-
+        */
+        furthest = maze[8, 8];
         if (furthest.X == 0) furthest.WallLeft = false;//если в левом ряду
         else if (furthest.Y == 0) furthest.WallBottom = false;//в нижнем
         else if (furthest.X == width - 2)//в правом

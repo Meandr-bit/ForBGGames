@@ -31,6 +31,11 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(WaitAndGo());
     }
 
+    private void Update()
+    {
+        UIController.instance.DrawPath();
+    }
+
     public void EnableShield()
     {
         ShiledIsActive = true;
@@ -62,6 +67,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 90, 0);
         Cube.GetComponent<BoxCollider>().enabled = true;
         Cube.GetComponent<MeshRenderer>().enabled = true;
+        yield return new WaitForSeconds(2f);
         GetComponent<AIPath>().canMove = true;
         //GetComponent<NavMeshAgent>().speed = 1.5f;
         yield return new WaitForSeconds(2f);

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AllLanguages>
+  <LanguageItems>
+    <LanguageItem name="English">
+      <Exit>EXIT</Exit>
+      <Pause>PAUSE</Pause>
+      <Shield>SHIELD</Shield>
+      <Continue>CONTINUE</Continue>
+    </LanguageItem>
+    <LanguageItem name="Russian">
+      <Exit>ВЫХОД</Exit>
+      <Pause>ПАУЗА</Pause>
+      <Shield>ЩИТ</Shield>
+      <Continue>ПРОДОЛЖИТЬ</Continue>
+    </LanguageItem> 
+  </LanguageItems>
+</AllLanguages>

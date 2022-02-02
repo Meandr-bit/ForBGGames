@@ -13,6 +13,7 @@ public class MazeSpawner : MonoBehaviour
     public int mazeTotalSize;
     public int deathCubesSpawned = 0, maxDeathCubes;
     bool firstMaze = true;
+    List<Cell> cells = new List<Cell>();
 
     private void Awake()
     {
@@ -77,8 +78,10 @@ public class MazeSpawner : MonoBehaviour
                 {
                     c.FinishCell = true;
                 }
+                cells.Add(c);
             }
         }
+        PlaceDeathZones();
         //AStar.GetComponent<Pathfinding.Pathfinder>().Scan();
         StartCoroutine(DelayedScan());
     }
@@ -87,6 +90,23 @@ public class MazeSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         AstarPath.active.Scan();
+    }
+
+    public void PlaceDeathZones()
+    {
+        while(deathCubesSpawned < maxDeathCubes)
+        {
+                for (int y = 0; y < cells.Count; y++)
+                {
+                    if (cells[y].GenerateDeathCubes())
+                    {
+                        cells[y].DeathCubePrefab.GetComponent<DeathZoneFix>().priority = y;
+                        deathCubesSpawned++;
+                        y++;
+                    }
+                }
+        }
+
     }
 
     public void SpawnAMaze()

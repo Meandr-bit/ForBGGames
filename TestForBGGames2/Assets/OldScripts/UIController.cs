@@ -8,7 +8,7 @@ using Pathfinding;
 public class UIController : MonoBehaviour
 {
     public static UIController instance;
-    public GameObject ShieldButton, ContinueButton, DarkPanel;
+    public GameObject ShieldButton, ContinueButton, PauseB, ExitB, DarkPanel;
     Coroutine eS = null;
     Coroutine darkScreen = null;
     float shieldTimer;
@@ -43,7 +43,6 @@ public class UIController : MonoBehaviour
     IEnumerator EnableShield()
     {
         PlayerController.instance.EnableShield();
-        DrawPath();
         yield return new WaitForSeconds(2f);
         ShieldButton.GetComponent<Button>().interactable = false;
         PlayerController.instance.DisableShield();
@@ -129,18 +128,22 @@ public class UIController : MonoBehaviour
     public void DrawPath()
     {
         Path currentPath = PlayerController.instance.GetComponent<Seeker>().GetCurrentPath();
-        List<GraphNode> nodes = currentPath.path;
-        List<Vector3> nodesPositions = new List<Vector3>();
-        foreach (GraphNode n in nodes)
+        if (currentPath != null)
         {
-            Vector3 nodePos = (Vector3)n.position;
-            nodesPositions.Add(nodePos);
-        }
-        GetComponent<LineRenderer>().positionCount = nodesPositions.Count;
+            List<GraphNode> nodes = currentPath.path;
+            List<Vector3> nodesPositions = new List<Vector3>();
+            foreach (GraphNode n in nodes)
+            {
+                Vector3 nodePos = (Vector3)n.position;
+                nodesPositions.Add(nodePos);
+            }
+            GetComponent<LineRenderer>().positionCount = nodesPositions.Count;
 
-        for(int x = 0; x < nodesPositions.Count; x++)
-        {
-            GetComponent<LineRenderer>().SetPosition(x, nodesPositions[x]);
+            for (int x = 0; x < nodesPositions.Count; x++)
+            {
+                GetComponent<LineRenderer>().SetPosition(x, nodesPositions[x]);
+            }
         }
     }
+
 }
