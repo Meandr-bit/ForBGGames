@@ -27,7 +27,11 @@ public class MazeSpawner : MonoBehaviour
 
     private void Start()
     {
-        
+        PlaceNewMaze();
+    }
+    
+    public void PlaceNewMaze()
+    {
         MazeGenerator generator = new MazeGenerator();
         generator.width = mazeWidth;
         generator.height = mazeHeight;
@@ -56,7 +60,6 @@ public class MazeSpawner : MonoBehaviour
         //AStar.GetComponent<Pathfinding.Pathfinder>().Scan();
         AstarPath.active.Scan();
     }
-    
 
     public void SpawnAMaze()
     {

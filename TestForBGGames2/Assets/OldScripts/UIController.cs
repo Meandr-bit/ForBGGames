@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour
 {
     public GameObject ShieldButton, ContinueButton, DarkPanel;
     Coroutine eS = null;
+    Coroutine darkScreen = null;
     float shieldTimer;
 
     public void ButtonDownShield()
@@ -39,7 +40,7 @@ public class UIController : MonoBehaviour
         ContinueButton.SetActive(true);
         Time.timeScale = 0.000001f;
         //затемняем экран
-        StartCoroutine(DarkenTheScreen());
+        darkScreen = StartCoroutine(DarkenTheScreen());
     }
 
     IEnumerator DarkenTheScreen()
@@ -54,11 +55,31 @@ public class UIController : MonoBehaviour
         }
     }
 
+    IEnumerator LightenTheScreen()
+    {
+        float step = 0.05f;
+        while (true)
+        {
+            Color currentColor = DarkPanel.GetComponent<Image>().color;
+            DarkPanel.GetComponent<Image>().color = new Color(currentColor.r, currentColor.g, currentColor.b, currentColor.a - step);
+            yield return new WaitForSeconds(Time.timeScale * 0.1f);
+        }
+    }
+
     public void Continue()
     {
-        DarkPanel.GetComponent<Image>().color = new Color(1, 1, 1, 0);
+        StopCoroutine(darkScreen);
+        DarkPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
         DarkPanel.GetComponent<Image>().enabled = false;
         Time.timeScale = 1;
         ContinueButton.SetActive(false);
+    }
+
+    IEnumerator LevelCompleted()
+    {
+        StartCoroutine(DarkenTheScreen());
+        yield return new WaitForSeconds(4);
+        
+        StartCoroutine(LightenTheScreen());
     }
 }
