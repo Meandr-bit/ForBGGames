@@ -9,6 +9,7 @@ public class CollisionController : MonoBehaviour
     {
         if (other.tag == "DeathZone")
         {
+            Debug.Log("DeathzoneTouched");
             if (!PlayerController.instance.ShiledIsActive)
             {
                 StartCoroutine(PlayerController.instance.DeathAndRespawn());

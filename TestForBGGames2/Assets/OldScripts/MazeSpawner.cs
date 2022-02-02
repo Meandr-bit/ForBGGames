@@ -11,6 +11,7 @@ public class MazeSpawner : MonoBehaviour
     public int mazeWidth, mazeHeight;
     public MazeGeneratorCell[,] maze;
     public int mazeTotalSize;
+    public int deathCubesSpawned = 0, maxDeathCubes;
 
     private void Awake()
     {
@@ -43,11 +44,13 @@ public class MazeSpawner : MonoBehaviour
                 c.WallRight.SetActive(maze[x, y].WallRight);
                 c.WallBottom.SetActive(maze[x, y].WallBottom);
                 c.WallTop.SetActive(maze[x, y].WallTop);
+                c.coord = new Vector2Int(x, y);
                 if (maze[x, y].Finish)
                 {
                     c.FinishZone.SetActive(true);
                     PlayerController.instance.Finish = c.FinishZone;
                 }
+                c.gameObject.name = "Cell(" + x.ToString() + "," + y.ToString() + ")";
             }
         }
         //AStar.GetComponent<Pathfinding.Pathfinder>().Scan();

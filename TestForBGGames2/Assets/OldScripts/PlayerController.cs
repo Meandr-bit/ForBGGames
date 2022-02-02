@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
     public GameObject Finish, Cube, Explosion, ConfettiParticles;
     public bool ShiledIsActive = false;
+    Vector3 startPos = new Vector3();
 
     public Color defaultColor, shieldedColor;
     
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        startPos = transform.position;
     }
 
     private void Start()
@@ -51,17 +53,19 @@ public class PlayerController : MonoBehaviour
         //GetComponent<NavMeshAgent>().enabled = false;
         //запускаем анимацию
         Instantiate(Explosion, transform.position, transform.rotation);
+        GetComponent<AIPath>().canMove = false;
         //ждем пару сек
         yield return new WaitForSeconds(2f);
         //"спавним" игрока на старте
-        //transform.position = new Vector3(-3.5f, 0.08333629f, -3.5f);
-        GetComponent<NavMeshAgent>().Warp(new Vector3(-3.5f, 0.08333629f, -3.5f));
+        transform.position = startPos;
+        //GetComponent<NavMeshAgent>().Warp(new Vector3(-3.5f, 0.08333629f, -3.5f));
         transform.rotation = Quaternion.Euler(0, 90, 0);
         Cube.GetComponent<BoxCollider>().enabled = true;
         Cube.GetComponent<MeshRenderer>().enabled = true;
+        GetComponent<AIPath>().canMove = true;
         //GetComponent<NavMeshAgent>().speed = 1.5f;
         yield return new WaitForSeconds(2f);
-        GetComponent<UnityEngine.AI.NavMeshAgent>().destination = Finish.transform.position;
+        //GetComponent<UnityEngine.AI.NavMeshAgent>().destination = Finish.transform.position;
     }
 
     IEnumerator WaitAndGo()
