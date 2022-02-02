@@ -12,6 +12,7 @@ public class MazeSpawner : MonoBehaviour
     public MazeGeneratorCell[,] maze;
     public int mazeTotalSize;
     public int deathCubesSpawned = 0, maxDeathCubes;
+    bool firstMaze = true;
 
     private void Awake()
     {
@@ -28,10 +29,27 @@ public class MazeSpawner : MonoBehaviour
     private void Start()
     {
         PlaceNewMaze();
+        firstMaze = false;
     }
     
     public void PlaceNewMaze()
     {
+        //удаляем старый
+        if (!firstMaze)
+        {
+            Debug.Log("начато удаление старого лабиринта");
+
+            foreach (Transform cellT in Cell_container.GetComponentsInChildren<Transform>())
+            {
+                if (cellT != Cell_container.transform)
+                {
+                    Destroy(cellT.gameObject);
+                    
+                }
+            }
+            Debug.Log("old maze deleted");
+        }
+        //размещаем новый
         MazeGenerator generator = new MazeGenerator();
         generator.width = mazeWidth;
         generator.height = mazeHeight;
@@ -55,9 +73,19 @@ public class MazeSpawner : MonoBehaviour
                     PlayerController.instance.Finish = c.FinishZone;
                 }
                 c.gameObject.name = "Cell(" + x.ToString() + "," + y.ToString() + ")";
+                if (maze[x, y].Finish)
+                {
+                    c.FinishCell = true;
+                }
             }
         }
         //AStar.GetComponent<Pathfinding.Pathfinder>().Scan();
+        StartCoroutine(DelayedScan());
+    }
+
+    IEnumerator DelayedScan()
+    {
+        yield return new WaitForSeconds(0.2f);
         AstarPath.active.Scan();
     }
 

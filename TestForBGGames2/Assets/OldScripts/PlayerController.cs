@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
     public GameObject Finish, Cube, Explosion, ConfettiParticles;
     public bool ShiledIsActive = false;
-    Vector3 startPos = new Vector3();
+    public Vector3 startPos = new Vector3();
 
     public Color defaultColor, shieldedColor;
     

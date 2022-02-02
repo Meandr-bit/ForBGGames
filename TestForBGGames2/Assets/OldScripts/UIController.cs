@@ -3,13 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Pathfinding;
 
 public class UIController : MonoBehaviour
 {
+    public static UIController instance;
     public GameObject ShieldButton, ContinueButton, DarkPanel;
     Coroutine eS = null;
     Coroutine darkScreen = null;
     float shieldTimer;
+
+    private void Awake()
+    {
+        if (!instance)
+        {
+            instance = this;
+        } else if(instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void ButtonDownShield()
     {
@@ -51,6 +64,7 @@ public class UIController : MonoBehaviour
         {
             Color currentColor = DarkPanel.GetComponent<Image>().color;
             DarkPanel.GetComponent<Image>().color = new Color(currentColor.r, currentColor.g, currentColor.b, currentColor.a + step);
+            if (currentColor.a >= 1f) break;
             yield return new WaitForSeconds(Time.timeScale*0.1f);
         }
     }
@@ -62,8 +76,11 @@ public class UIController : MonoBehaviour
         {
             Color currentColor = DarkPanel.GetComponent<Image>().color;
             DarkPanel.GetComponent<Image>().color = new Color(currentColor.r, currentColor.g, currentColor.b, currentColor.a - step);
+            if (currentColor.a <= 0.1f) break;
             yield return new WaitForSeconds(Time.timeScale * 0.1f);
         }
+        DarkPanel.GetComponent<Image>().enabled = false;
+
     }
 
     public void Continue()
@@ -75,11 +92,36 @@ public class UIController : MonoBehaviour
         ContinueButton.SetActive(false);
     }
 
-    IEnumerator LevelCompleted()
+    public void ExitButton()
     {
+        if (Application.isEditor)
+        {
+            UnityEditor.EditorApplication.isPlaying = false;
+        }
+        else
+        {
+            Application.Quit();
+        }
+    }
+
+    public IEnumerator LevelCompleted()
+    {
+        yield return new WaitForSeconds(2);
         StartCoroutine(DarkenTheScreen());
+        yield return new WaitForSeconds(2);
+        Debug.Log("1");
+        PlayerController.instance.gameObject.SetActive(false);
         yield return new WaitForSeconds(4);
-        
+        MazeSpawner.instance.PlaceNewMaze();
+        Debug.Log("2");
         StartCoroutine(LightenTheScreen());
+        yield return new WaitForSeconds(2);
+        Debug.Log("3");
+        PlayerController.instance.gameObject.SetActive(true);
+        PlayerController.instance.GetComponent<AIPath>().canMove = false;
+        PlayerController.instance.transform.position = PlayerController.instance.startPos;
+        PlayerController.instance.GetComponent<AIPath>().destination = PlayerController.instance.Finish.transform.position;
+        yield return new WaitForSeconds(2);
+        PlayerController.instance.GetComponent<AIPath>().canMove = true;
     }
 }
